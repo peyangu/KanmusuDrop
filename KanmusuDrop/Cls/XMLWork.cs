@@ -27,7 +27,7 @@ namespace KanmusuDrop
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(DatDropData[]));
 
             // リストをシリアライズ化(配列にしてから)
-            using (System.IO.FileStream fs = new System.IO.FileStream("XML/DropData.xml", System.IO.FileMode.Create)) 
+            using (System.IO.FileStream fs = new System.IO.FileStream("DropData.xml", System.IO.FileMode.Create)) 
             {
                 serializer.Serialize(fs, dropList.ToArray());
             }
@@ -60,15 +60,11 @@ namespace KanmusuDrop
         {
             DatDropData[] loadAry;
 
-            //現在のコードを実行しているAssemblyを取得
-            System.Reflection.Assembly myAssembly =
-                System.Reflection.Assembly.GetExecutingAssembly();
-
             // コンストラクタで引数を指定している場合、渡していないとエラーになる。
             // ClsDropDataのコンストラクタ2があるのはここのため
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(DatDropData[]));
 
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(myAssembly.GetManifestResourceStream("KanmusuDrop.XML.DropData.xml"), new System.Text.UTF8Encoding(false)))
+            using (System.IO.StreamReader sr = new System.IO.StreamReader("DropData.xml", new System.Text.UTF8Encoding(false)))
             {
                 loadAry = (DatDropData[])serializer.Deserialize(sr);
             }
@@ -86,7 +82,7 @@ namespace KanmusuDrop
 
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(DatShipClass[]));
 
-            using (System.IO.StreamReader sr = new System.IO.StreamReader("../../XML/ShipClass.xml", new System.Text.UTF8Encoding(false)))
+            using (System.IO.StreamReader sr = new System.IO.StreamReader("ShipClass.xml", new System.Text.UTF8Encoding(false)))
             {
                 loadAry = (DatShipClass[])serializer.Deserialize(sr);
             }

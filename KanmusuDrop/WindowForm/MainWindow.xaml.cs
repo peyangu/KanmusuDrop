@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using TweetSharp;
 
 namespace KanmusuDrop
 {
@@ -22,6 +22,8 @@ namespace KanmusuDrop
     /// </summary>
     public partial class MainWindow : Window
     {
+        // TODO: Twitterの認証情報の保持の仕方(毎回認証？)
+        
         /// <summary>
         /// 艦娘リスト
         /// </summary>
@@ -31,6 +33,11 @@ namespace KanmusuDrop
         /// 艦娘ドロップリスト
         /// </summary>
         readonly List<DatDropData> dropKanmusuList = new List<DatDropData>();
+
+        /// <summary>
+        /// Twitter情報のプロパティ
+        /// </summary>
+        static TwitterService MainService { get; set; }
 
         public MainWindow()
         {
@@ -91,6 +98,10 @@ namespace KanmusuDrop
 
                     dropKanmusuList.Add(new DatDropData(win, shipCls, KanmusuNameText.Text, rare, dropCount));
                     UpdateDispList();
+                    // ツイート投稿
+                    if(MainService != null)
+                        MainService.SendTweet(new SendTweetOptions { Status = KanmusuNameText.Text + "を入手しました。 #かんろく #かんろくテスト" });
+
                     KanmusuNameText.Text = String.Empty;
                 }
                 catch (Exception ex)
@@ -252,6 +263,26 @@ namespace KanmusuDrop
             base.OnClosed(e);
             // 閉じる時に確実に起こるように。
             XMLWork.DropDataSave(dropKanmusuList);
+        }
+
+        /// <summary>
+        /// Twitter情報取得
+        /// </summary>
+        /// <param name="service"></param>
+        public static void ServicePropSet(TwitterService service)
+        {
+            MainService = service;
+        }
+
+        /// <summary>
+        /// twitterアイコンクリック
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            TwitterWindow win = new TwitterWindow();
+            win.Show();
         }
     }
 }
