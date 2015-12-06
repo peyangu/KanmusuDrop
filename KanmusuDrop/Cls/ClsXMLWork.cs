@@ -13,7 +13,7 @@ namespace KanmusuDrop
     /// XMLの操作クラス
     /// XMLへの保存、読み込みを担当
     /// </summary>
-    public class XMLWork
+    public class ClsXMLWork
     {
         /// <summary>
         /// ドロップ情報の保存
@@ -21,9 +21,6 @@ namespace KanmusuDrop
         /// <param name="dropList"></param>
         public static void DropDataSave(List<DatDropData> dropList) 
         {
-            //現在のコードを実行しているAssemblyを取得
-            Assembly myAssembly = Assembly.GetExecutingAssembly();
-
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(DatDropData[]));
 
             // リストをシリアライズ化(配列にしてから)
@@ -67,24 +64,6 @@ namespace KanmusuDrop
             using (System.IO.StreamReader sr = new System.IO.StreamReader("DropData.xml", new System.Text.UTF8Encoding(false)))
             {
                 loadAry = (DatDropData[])serializer.Deserialize(sr);
-            }
-
-            return loadAry.ToList();
-        }
-
-        /// <summary>
-        /// 艦種の取得
-        /// </summary>
-        /// <returns></returns>
-        public static List<DatShipClass> ShipClassLoad()
-        {
-            DatShipClass[] loadAry;
-
-            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(DatShipClass[]));
-
-            using (System.IO.StreamReader sr = new System.IO.StreamReader("ShipClass.xml", new System.Text.UTF8Encoding(false)))
-            {
-                loadAry = (DatShipClass[])serializer.Deserialize(sr);
             }
 
             return loadAry.ToList();

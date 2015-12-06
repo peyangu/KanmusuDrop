@@ -3,15 +3,124 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:chrome="http://schemes.grabacr.net/winfx/2014/chrome"
         xmlns:local="clr-namespace:KanmusuDrop"
         mc:Ignorable="d"
-        Title="艦娘ドロップ記録 - かんろく -" Height="160.623" Width="444.476">
+        Title="艦娘ドロップ記録 - かんろく -" Height="210.866" Width="418.476" Background="Black">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{x:Static SystemParameters.CaptionHeight}"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+    <i:Interaction.Behaviors>
+        <chrome:MetroChromeBehavior ActiveBrush="DeepSkyBlue"
+                                    InactiveBrush="DarkGray"
+                                    Mode="VisualStudio2013" />
+    </i:Interaction.Behaviors>
     <Grid>
-        <Label Name="label1" Content="ドロップ情報をTwitterに投稿することができます。" Margin="0,0,0,103"/>
-        <Label Name="label2" Content="認証ボタンを押すと、Twitter連携ページを表示します。" Margin="0,20,0,83"/>
-        <Label Name="label3" Content="連携後に表示されるPINコードを下のテキストボックスに入力し、完了ボタンを押してください。" Margin="0,40,0,61"/>
-        <Button Name="AuthButton" Content="認証" Click="AuthButton_Click" Margin="10,69,356,40"/>
-        <TextBox x:Name="PinCodeText" HorizontalAlignment="Left" Height="23" Margin="10,95,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308"/>
-        <Button x:Name="EndButton" Content="完了" HorizontalAlignment="Left" Margin="323,95,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="EndButton_Click"/>
+        <TextBlock x:Name="TitleText" Text="艦娘ドロップ記録 - かんろく - 1.00" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFBF7F7" Height="19" Width="201" Margin="4,4,0,0"/>
+        <StackPanel Orientation="Horizontal" Margin="0,5,8,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top" Height="18" Width="38">
+            <StackPanel.Resources>
+                <Style x:Key="CaptionButtonStyleKey" TargetType="{x:Type Button}">
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="FontFamily" Value="Marlett"/>
+                    <Setter Property="IsTabStop" Value="False"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                    <Setter Property="Margin" Value="2" />
+                    <Setter Property="Padding" Value="1" />
+                    <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border x:Name="border" Background="Transparent" SnapsToDevicePixels="True">
+                                    <Border.Effect>
+                                        <DropShadowEffect Opacity="0"/>
+                                    </Border.Effect>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal">
+                                                <Storyboard>
+                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+                                                    </DoubleAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="MouseOver">
+                                                <Storyboard>
+                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                        <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                                    </DoubleAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                        <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                                    </DoubleAnimationUsingKeyFrames>
+                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="border">
+                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                                    </DoubleAnimationUsingKeyFrames>
+                                                    <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Color)" Storyboard.TargetName="border">
+                                                        <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                                                    </ColorAnimationUsingKeyFrames>
+                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="border">
+                                                        <EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+                                                    </DoubleAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Disabled"/>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <ContentPresenter x:Name="contentPresenter" Focusable="False" Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="MinButton" Content="0" Style="{DynamicResource CaptionButtonStyleKey}" Click="MinButton_Click" />
+            <Button x:Name="CloseButton" Content="r" Style="{DynamicResource CaptionButtonStyleKey}" Click="CloseButton_Click" />
+        </StackPanel>
+        <Label Content="ドロップ情報をTwitterに投稿することができます。" HorizontalAlignment="Left" VerticalAlignment="Top" Width="327" Foreground="#FFFFFDFD" Margin="0,33,0,0"/>
+        <Label Content="認証ボタンを押すと、Twitter連携ページを表示します。" HorizontalAlignment="Left" Margin="2,61,0,0" VerticalAlignment="Top" Width="316" Foreground="White"/>
+        <Label Content="PINコードをテキストボックスに入力し、完了ボタンを押してください。" HorizontalAlignment="Left" Margin="2,87,0,0" VerticalAlignment="Top" Width="416" Foreground="White"/>
+        <Button Name="AuthButton" Content="認証" HorizontalAlignment="Left" Margin="323,63,0,0" VerticalAlignment="Top" Width="75" Height="23" Command="{Binding StartAuthCom}" MouseEnter="AuthButton_MouseEnter" MouseLeave="AuthButton_MouseLeave">
+            <Button.Template>
+                <ControlTemplate>
+                    <Border x:Name="ButtonBorder" Background="#FF080808" BorderBrush="#FF999696" BorderThickness="1">
+                        <TextBlock Text="認証" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <TextBox x:Name="PinCodeText" HorizontalAlignment="Left" Height="23" Margin="10,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="308" Text="{Binding Path=Model.PinCode, Mode=TwoWay}"/>
+        <Button x:Name="EndButton" Content="完了" HorizontalAlignment="Left" Margin="323,116,0,0" VerticalAlignment="Top" Width="75" Height="23" Command="{Binding CompletionAuthCom}" MouseEnter="EndButton_MouseEnter" MouseLeave="EndButton_MouseLeave">
+            <Button.Template>
+                <ControlTemplate>
+                    <Border x:Name="ButtonBorder" Background="#FF080808" BorderBrush="#FF999696" BorderThickness="1">
+                        <TextBlock Text="完了" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Label Content="認証を取り消す場合は、認証解除ボタンを押してください。" HorizontalAlignment="Left" Margin="0,142,0,0" VerticalAlignment="Top" Width="327" Foreground="White"/>
+        <Button Name="AuthKaijoButton" Content="認証解除" HorizontalAlignment="Left" Margin="323,144,0,0" VerticalAlignment="Top" Width="75" Height="23" Command="{Binding ReleaseAuthCom}" IsEnabled="{Binding Path=Model.ButtonEnabled}" MouseEnter="AuthKaijoButton_MouseEnter" MouseLeave="AuthKaijoButton_MouseLeave">
+            <Button.Template>
+                <ControlTemplate>
+                    <Border x:Name="ButtonBorder" Background="#FF080808" BorderBrush="#FF999696" BorderThickness="1">
+                        <TextBlock Text="認証解除" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="10" Foreground="White"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
     </Grid>
 </Window>

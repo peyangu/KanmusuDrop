@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace KanmusuDrop
+namespace KanmusuDrop.Behavior
 {
     /// <summary>
     /// テキストボックスにプレースホルダーを表示する添付ビヘイビア

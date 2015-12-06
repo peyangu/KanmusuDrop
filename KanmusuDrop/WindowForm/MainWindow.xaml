@@ -4,6 +4,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:chrome="http://schemes.grabacr.net/winfx/2014/chrome"
         xmlns:local="clr-namespace:KanmusuDrop"
+        xmlns:b="clr-namespace:KanmusuDrop.Behavior"
         Title="艦娘ドロップ記録 - かんろく - Ver.1.00" Height="351.273" Width="306.429" SnapsToDevicePixels="True" Background="Black"
         MaxWidth="{Binding RelativeSource={RelativeSource Self},Path=Width}"
         MinWidth="{Binding RelativeSource={RelativeSource Self},Path=Width}">
@@ -14,15 +15,13 @@
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
                       UseAeroCaptionButtons="False"/>
     </WindowChrome.WindowChrome>
-    <!--<i:Interaction.Behaviors>
+    <i:Interaction.Behaviors>
         <chrome:MetroChromeBehavior ActiveBrush="DeepSkyBlue"
                                     InactiveBrush="DarkGray"
-                                    Mode="VisualStudio2013">
-
-        </chrome:MetroChromeBehavior>
-    </i:Interaction.Behaviors>-->
+                                    Mode="VisualStudio2013" />
+    </i:Interaction.Behaviors>
     <Border BorderBrush="Gray" BorderThickness="1">
-        <Grid Margin="0,0,-1,0" Background="Black">
+        <Grid Margin="0,0,-1,0" Background="Black" Name="All">
             <!-- タイトルバーを表示しないので、文字と各種ボタンは自前で実装する。 -->
             <TextBlock x:Name="TitleText" Text="艦娘ドロップ記録 - かんろく - 1.00" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="#FFFBF7F7" Height="19" Width="201" Margin="4,4,0,0"/>
             <StackPanel Orientation="Horizontal" Margin="0,5,5,0"
@@ -94,9 +93,10 @@
                 <Button x:Name="MinButton" Content="0" Style="{DynamicResource CaptionButtonStyleKey}" Click="MinButton_Click" />
                 <Button x:Name="MaxButton" Content="1" Style="{DynamicResource CaptionButtonStyleKey}" Click="MaxButton_Click" />
                 <Button x:Name="RestorationButton" Content="2" Style="{DynamicResource CaptionButtonStyleKey}" Click="RestorationButton_Click" />
-                <Button x:Name="CloseButton" Content="r" Style="{DynamicResource CaptionButtonStyleKey}" Click="CloseButton_Click" />
+                <Button x:Name="CloseButton" Content="r" Style="{DynamicResource CaptionButtonStyleKey}" Command="{Binding Close}">
+                </Button>
             </StackPanel>
-            <ComboBox x:Name="WinDecisionCommbo" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="0" Height="24">
+            <ComboBox x:Name="WinDecisionCommbo" HorizontalAlignment="Left" Margin="10,27,0,0" VerticalAlignment="Top" Width="65" SelectedIndex="{Binding Model.WinDecision}" Height="24">
                 <ListBoxItem Content="S"/>
                 <ListBoxItem Content="A"/>
                 <ListBoxItem Content="B"/>
@@ -104,9 +104,9 @@
                 <ListBoxItem Content="D"/>
             </ComboBox>
             <TextBox x:Name="KanmusuNameText" HorizontalAlignment="Left" Height="23" Margin="80,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" RenderTransformOrigin="0.5,0.893" 
-            	InputMethod.PreferredImeState="On" InputMethod.PreferredImeConversionMode="FullShape,Native" KeyDown="KanmusuNameText_KeyDown" ToolTip="Enter押下で登録されます。" local:PlaceHolderBehavior.PlaceHolderText="ドロップした艦娘名" Foreground="White">
+            	InputMethod.PreferredImeState="On" InputMethod.PreferredImeConversionMode="FullShape,Native" b:TextBoxBehavior.Command="{Binding EnterKanmusuCom}" Text="{Binding Model.KanmusuName, Mode=TwoWay, UpdateSourceTrigger=Explicit}"  ToolTip="Enter押下で登録されます。" b:PlaceHolderBehavior.PlaceHolderText="ドロップした艦娘名" Foreground="White" >
             </TextBox>
-            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="268,58,0,0" VerticalAlignment="Top" Width="24" Click="button_Click">
+            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="268,58,0,0" VerticalAlignment="Top" Width="24" Command="{Binding OpenTwitterAuthCom}">
                 <Button.Template>
                     <ControlTemplate>
                         <Border x:Name="ButtonBorder" BorderBrush="#FF999696" BorderThickness="0" Height="21">
@@ -117,7 +117,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button x:Name="DropDelButton" Content="ドロップ削除" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="81" Click="DropDelButton_Click" Height="24" MouseEnter="DropDelButton_MouseEnter" MouseLeave="DropDelButton_MouseLeave">
+            <Button x:Name="DropDelButton" Content="ドロップ削除" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Width="81" Command="{Binding DeleteKanmusuCom}" Height="24" MouseEnter="DropDelButton_MouseEnter" MouseLeave="DropDelButton_MouseLeave">
                 <!-- ボタンテンプレート イベントも使えば、フォーカス時の色などが変更できる この設定だけだと色固定になる -->
                 <Button.Template>
                     <ControlTemplate>
@@ -128,7 +128,7 @@
                 </Button.Template>
                 <!-- ボタンテンプレート -->
             </Button>
-            <Button x:Name="ExcelButton" Content="出力" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Width="81" Margin="96,56,0,0" FontSize="10" Foreground="#FFFDFDFD" Background="Black" Click="ExcelButton_Click" MouseEnter="ExcelButton_MouseEnter" MouseLeave="ExcelButton_MouseLeave">
+            <Button x:Name="ExcelButton" Content="出力" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Width="81" Margin="96,56,0,0" FontSize="10" Foreground="#FFFDFDFD" Background="Black" Command="{Binding OutputCsvCom}" MouseEnter="ExcelButton_MouseEnter" MouseLeave="ExcelButton_MouseLeave">
                 <Button.Template>
                     <ControlTemplate>
                         <Border x:Name="ButtonBorder" Background="#FF080808" BorderBrush="#FF999696" BorderThickness="1">
@@ -137,7 +137,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            <Button x:Name="DropReset" Content="リストリセット" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Width="81" Margin="182,56,0,0" FontSize="10" Foreground="#FFFDFDFD" Background="Black" Click="DropReset_Click" MouseEnter="DropReset_MouseEnter" MouseLeave="DropReset_MouseLeave">
+            <Button x:Name="DropReset" Content="リストリセット" Height="24" HorizontalAlignment="Left" VerticalAlignment="Top" Width="81" Margin="182,56,0,0" FontSize="10" Foreground="#FFFDFDFD" Background="Black" Command="{Binding ListResetCom}" MouseEnter="DropReset_MouseEnter" MouseLeave="DropReset_MouseLeave">
                 <Button.Template>
                     <ControlTemplate>
                         <Border x:Name="ButtonBorder" Background="#FF080808" BorderBrush="#FF999696" BorderThickness="1">
@@ -147,43 +147,46 @@
                 </Button.Template>
             </Button>
             <!-- InputMethod.PreferredImeState="On"でIME有効 InputMethod.PreferredImeConversionMode="FullShape,Native"で全角ひらがなを初期値 -->
-            <!-- アンカープロパティはないので、HorizontalAlignment="Stretch", VerticalAlignment="Stretch" Height="Auto" Width="Auto"で対応する -->
-            <DataGrid x:Name="DropGrid" HorizontalAlignment="Stretch" Margin="10,85,10,10" VerticalAlignment="Stretch" Height="Auto" Width="Auto" IsReadOnly="True" AutoGenerateColumns="False">
-                <DataGrid.ItemContainerStyle>
-                    <Style TargetType="DataGridRow">
-                        <Style.Triggers>
-                            <!-- Rarityに応じて背景を設定する -->
-                            <DataTrigger Binding="{Binding DropRarity}" Value="1">
-                                <Setter Property="Background" Value="#FFB2B4B2" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding DropRarity}" Value="2">
-                                <Setter Property="Background" Value="#FFE2F331" />
-                            </DataTrigger>
-                            <!-- グラデーション -->
-                            <DataTrigger Binding="{Binding DropRarity}" Value="3">
-                                <Setter Property="Background" >
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="#FFF95A5A" Offset="0.0" />
-                                            <GradientStop Color="#FFFFC55A" Offset="0.2" />
-                                            <GradientStop Color="#FFFFFF5A" Offset="0.4" />
-                                            <GradientStop Color="#FF5ACD5A" Offset="0.6" />
-                                            <GradientStop Color="#FF5A5AFF" Offset="0.8" />
-                                            <GradientStop Color="Violet" Offset="1.0" />
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.ItemContainerStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="勝利判定" Width="60" Binding="{Binding DropWinDecision}"/>
-                    <DataGridTextColumn Header="名前" Width="100" Binding="{Binding DropKanmusuName}"/>
-                    <DataGridTextColumn Header="ドロップ回数" Width="95" Binding="{Binding DropCount}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-
+            <Label Name="twitterAuth" Content="連&#10;携&#10;中" HorizontalAlignment="Left" Margin="268,17,0,0" VerticalAlignment="Top" Width="24" Foreground="#FF7FDE0D" FontSize="9" Background="{x:Null}" Visibility="{Binding Model.TwitterAuth}"/>
+            <Grid Name="Drop">
+                <!-- アンカープロパティはないので、HorizontalAlignment="Stretch", VerticalAlignment="Stretch" Height="Auto" Width="Auto"で対応する -->
+                <DataGrid x:Name="DropGrid" HorizontalAlignment="Stretch" Margin="10,85,10,10" VerticalAlignment="Stretch" Height="Auto" Width="Auto" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Model.BindList}" SelectedIndex="{Binding Model.GridIndex}">
+                    <DataGrid.ItemContainerStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <!-- Rarityに応じて背景を設定する -->
+                                <DataTrigger Binding="{Binding DropRarity}" Value="1">
+                                    <Setter Property="Background" Value="#FFB2B4B2" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DropRarity}" Value="2">
+                                    <Setter Property="Background" Value="#FFE2F331" />
+                                </DataTrigger>
+                                <!-- グラデーション -->
+                                <DataTrigger Binding="{Binding DropRarity}" Value="3">
+                                    <Setter Property="Background" >
+                                        <Setter.Value>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#FFF95A5A" Offset="0.0" />
+                                                <GradientStop Color="#FFFFC55A" Offset="0.2" />
+                                                <GradientStop Color="#FFFFFF5A" Offset="0.4" />
+                                                <GradientStop Color="#FF5ACD5A" Offset="0.6" />
+                                                <GradientStop Color="#FF5A5AFF" Offset="0.8" />
+                                                <GradientStop Color="Violet" Offset="1.0" />
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.ItemContainerStyle>
+                    <DataGrid.Columns>
+                        <!-- CanUserSortでソートができるかどうか決められる -->
+                        <DataGridTextColumn Header="勝利判定" Width="60" Binding="{Binding DropWinDecision}" CanUserSort="False"/>
+                        <DataGridTextColumn Header="名前" Width="100" Binding="{Binding DropKanmusuName}" CanUserSort="False"/>
+                        <DataGridTextColumn Header="ドロップ回数" Width="95" Binding="{Binding DropCount}" CanUserSort="False"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </Border>
 </Window>

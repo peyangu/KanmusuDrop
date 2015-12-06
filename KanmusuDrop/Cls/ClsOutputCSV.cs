@@ -45,6 +45,7 @@ namespace KanmusuDrop
                 }
                 catch (SystemException ex)
                 {
+                    MessageBox.Show(ClsConst.ErrorMessage);
                     ClsLogWrite.LogWrite("CSV出力中にエラーが起きました。",ex);
                 }
             }

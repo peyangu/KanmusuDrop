@@ -17,11 +17,6 @@ namespace KanmusuDrop
         public string DropWinDecision { get; set; }
 
         /// <summary>
-        /// 艦種(ドロップ)
-        /// </summary>
-        public string DropShipClass { get; set; }
-
-        /// <summary>
         /// 艦娘名(ドロップ)
         /// </summary>
         public string DropKanmusuName { get; set; }
@@ -40,13 +35,11 @@ namespace KanmusuDrop
         /// コンストラクタ
         /// </summary>
         /// <param name="win">勝利判定</param>
-        /// <param name="shipCls">艦種</param>
         /// <param name="name">艦娘名</param>
         /// <param name="rare">レアリティ</param>
-        public DatDropData(string win, string shipCls, string name, short rare, int count) 
+        public DatDropData(string win, string name, short rare, int count) 
         {
             this.DropWinDecision = win;
-            this.DropShipClass = shipCls;
             this.DropKanmusuName = name;
             this.DropRarity = rare;
             this.DropCount = count;

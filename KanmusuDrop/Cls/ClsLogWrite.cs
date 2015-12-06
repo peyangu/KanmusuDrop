@@ -8,6 +8,8 @@ namespace KanmusuDrop
 {
     /// <summary>
     /// ログ出力クラス
+    /// ネットからの拾い物
+    /// http://homepage2.nifty.com/nonnon/index.html
     /// </summary>
     public class ClsLogWrite
     {
